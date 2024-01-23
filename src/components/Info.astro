@@ -1,0 +1,17 @@
+---
+import { SITE_AUTHOR_AVATAR,SITE_AUTHOR_NAME,SITE_AUTHOR_EMAIL } from "../consts";
+---
+
+<div
+  class="lg:flex-auto order-1 lg:order-3 base-bg h-min rounded-lg mb-6 lg:mb-0 p-6 flex flex-col gap-3 justify-center lg:min-w-96"
+>
+  <div
+    class="size-16 rounded-full shadow mx-auto border-2 p-1 overflow-hidden border-gray-100 shadow-gray-100 dark:bg-white"
+  >
+    <img src={SITE_AUTHOR_AVATAR} alt="avatar" class="size-16 object-contain" />
+  </div>
+  <span class="text-center text-lg dark:text-slate-100">{SITE_AUTHOR_NAME}</span>
+  <span class="text-center text-base dark:text-slate-100">
+    <a href={`mailto:${SITE_AUTHOR_EMAIL}`}>{SITE_AUTHOR_EMAIL}</a>
+  </span>
+</div>

@@ -1,0 +1,56 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Info from "../components/Info.astro";
+import HomeCard from "../components/HomeCard.astro";
+import { SITE_BANNER_INFO } from "../consts";
+import { getLatestPosts } from "../api/home";
+
+const posts = await getLatestPosts();
+---
+
+<Layout>
+  <div
+    class="i-container mx-auto h-full overflow-y-auto lg:overflow-hidden content-layout gap-3"
+  >
+    <!-- Banner -->
+    <div class="p-3">
+      <section
+        class="p-6 py rounded-lg bg-white dark:bg-gray-800 dark:text-slate-100"
+      >
+        {SITE_BANNER_INFO}
+      </section>
+    </div>
+
+    <!-- Content -->
+    <div
+      class="flex-auto lg:overflow-hidden h-full pb-6 flex flex-col lg:flex-row lg:gap-x-3"
+    >
+      <div class="h-full lg:overflow-y-auto order-2 w-full">
+        <section
+          class="flex flex-col gap-y-6 max-w-full lg:max-w-2xl lg:min-w-xl"
+        >
+          {
+            posts.map((post) => {
+              return <HomeCard slug={post.slug} type={post.type} />;
+            })
+          }
+        </section>
+
+        {
+          posts.length > 10 ? (
+            <p class="py-6 w-full text-sm mx-auto dark:text-slate-100 text-center">
+              This is page end! Read more please to
+              <b class="text-primary cursor-pointer"> Posts </b>!
+            </p>
+          ) : (
+            <p class="py-6 w-full text-sm mx-auto dark:text-slate-100 text-center">
+              That's all there is ！
+            </p>
+          )
+        }
+      </div>
+
+      <Info />
+    </div>
+  </div>
+</Layout>

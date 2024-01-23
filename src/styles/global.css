@@ -1,0 +1,65 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+::-webkit-scrollbar {
+  @apply w-0;
+  @apply sm:w-2;
+}
+
+body {
+  @apply bg-gray-100;
+  @apply dark:bg-black;
+  font-family: "Nunito", "Noto Sans SC", sans-serif;
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 70px calc(100vh - 70px - 46px) 46px;
+}
+
+.i-container {
+  width: calc(100% - 16px);
+}
+
+@media (min-width: 640px) {
+  .i-container {
+    max-width: 640px;
+  }
+}
+
+@media (min-width: 768px) {
+  .i-container {
+    max-width: 768px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .i-container {
+    max-width: 1024px;
+  }
+}
+
+.base-bg {
+  @apply bg-white;
+  @apply dark:bg-neutral-950;
+  @apply shadow dark:shadow-gray-700;
+}
+
+.base-text {
+  @apply active:text-primary;
+  @apply dark:text-slate-100;
+  @layer text-base;
+  @apply transition-colors duration-150;
+}
+
+.base-text:hover {
+  @apply hover:text-primary;
+  @apply dark:hover:text-primary;
+}
+
+.content-layout {
+  display: flex;
+  flex-direction: column;
+}

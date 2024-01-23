@@ -1,0 +1,34 @@
+---
+import type { HTMLAttributes } from "astro/types";
+
+type Props = HTMLAttributes<"a"> & {
+	disabledActive?: boolean;
+};
+
+const { href, disabledActive, class: className, ...props } = Astro.props;
+
+const { pathname } = Astro.url;
+const isActive = href === pathname || href === pathname.replace(/\/$/, "");
+debugger;
+---
+
+<a
+	href={href}
+	class:list={[
+		className,
+		"no-underline hover:color-primary header-link",
+		{ "is-active": isActive && !disabledActive, "is-disabled": isActive },
+	]}
+	{...props}
+>
+	<slot />
+</a>
+
+<style>
+	.header-link.is-active {
+		@apply text-primary;
+	}
+	.header-link.is-active{
+		pointer-events: none;
+	}
+</style>

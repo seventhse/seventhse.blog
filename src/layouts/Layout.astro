@@ -1,0 +1,33 @@
+---
+import BaseHead from '../components/BaseHead.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { ViewTransitions } from 'astro:transitions';
+import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
+
+interface Props{
+  title?: string
+  image?: string
+	desc?: string
+}
+
+const {title,image,desc} = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<BaseHead title={title ? `${SITE_TITLE} - ${title}` : SITE_TITLE} description={desc ?? SITE_DESCRIPTION} image={image} />
+		<ViewTransitions />
+	</head>
+	<body class="w-screen min-h-screen relative overflow-hidden layout">
+		<div>
+			<Header/>
+		</div>
+    <main class="overflow-hidden h-full"  transition:animate="slide">
+      <slot />  
+    </main>
+		<Footer />
+	</body>
+</html>
+

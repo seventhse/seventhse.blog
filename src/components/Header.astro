@@ -1,0 +1,184 @@
+---
+import HeaderLink from "./HeaderLink.astro";
+import Icon from "./Icon.astro";
+import MobileMenu from "./MobileMenu.astro";
+import { SITE_LOGO_TEXT, SITE_MENUS } from "../consts";
+---
+
+<div class="fixed top-2 w-full z-40">
+	<div
+		class="mx-auto i-container p-3 rounded-xl flex items-center justify-between gap-x-3 base-bg"
+	>
+		<MobileMenu menus={SITE_MENUS} />
+		<div
+			class="h-8 bg font-bold text-xl flex items-center dark:text-slate-100 cursor-pointer"
+		>
+			<HeaderLink href={"/"} disabledActive>{SITE_LOGO_TEXT}</HeaderLink>
+		</div>
+		<nav class="h-8 justify-between items-center mr-auto ml-16 hidden lg:flex">
+			<ul class="flex gap-x-6">
+				{
+					SITE_MENUS.map((menu) => (
+						<li class="cursor-pointer base-text">
+							<HeaderLink href={menu.path}>{menu.label}</HeaderLink>
+						</li>
+					))
+				}
+			</ul>
+		</nav>
+		<div id="theme-mode" class="flex items-center justify-end gap-x-3">
+			<span class="theme-mode">
+				<span id="light-mode" class="theme-mode-btn is-show">
+					<Icon name="#uil-sun" />
+				</span>
+				<span id="dark-mode" class="theme-mode-btn">
+					<Icon name="#uil-moon" />
+				</span>
+			</span>
+		</div>
+	</div>
+</div>
+
+<div class="switch-mode-animation-container">
+	<div id="switch-theme-mode-animation" class="switch-mode-animation is-hide">
+	</div>
+</div>
+
+<style>
+	.theme-mode {
+		@apply size-6 transition-all duration-100 cursor-pointer text-black dark:text-white;
+		overflow: hidden;
+		transition: all 100ms;
+		position: relative;
+	}
+	.theme-mode-btn {
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		transition: transform 1000ms;
+		transform: translateY(-100%);
+	}
+	.theme-mode-btn.is-show {
+		transform: translateY(0);
+	}
+
+	.switch-mode-animation-container {
+		@apply absolute;
+		@apply flex;
+		@apply items-center;
+		@apply justify-center;
+		top: 100px;
+		left: 100px;
+		width: 20px;
+		height: 20px;
+	}
+	.switch-mode-animation {
+		@apply relative;
+		@apply top-0;
+		@apply left-0;
+		@apply right-0;
+		width: 250vw;
+		height: 250vw;
+		border-radius: 50%;
+		transition: transform 1000ms ease-in-out;
+		transform: scale(0);
+		flex: 0 0 auto;
+		z-index: 0;
+		pointer-events: none;
+	}
+	.switch-mode-animation.is-dark {
+		@apply bg-black;
+	}
+	.switch-mode-animation.is-light {
+		@apply bg-white;
+	}
+
+	.switch-mode-animation.is-active {
+		@apply z-50;
+		transform: scale(1);
+	}
+	.switch-mode-animation.is-hide {
+		transition: all 0ms;
+		opacity: 0;
+		z-index: 0;
+	}
+
+	@media screen and (max-width: 769px) {
+		.switch-mode-animation {
+			width: 250vh;
+			height: 250vh;
+		}
+	}
+</style>
+
+<script>
+	const getCurrentDarkMode = () =>
+		!!document.querySelector("html")?.getAttribute("class")?.includes("dark");
+
+	const init = () => {
+		const darkModeBtn = document.querySelector("#dark-mode");
+		const lightModeBtn = document.querySelector("#light-mode");
+		const animation = document.querySelector("#switch-theme-mode-animation");
+
+		const startAnimation = (mode: "dark" | "light") => {
+			if (mode === "dark") {
+				animation?.classList.remove("is-light");
+				animation?.classList.add("is-dark");
+			} else {
+				animation?.classList.remove("is-dark");
+				animation?.classList.add("is-light");
+			}
+
+			animation?.classList.remove("is-hide");
+			animation?.classList.add("is-active");
+			return new Promise((res) => {
+				setTimeout(() => {
+					res("ok");
+				}, 700);
+			});
+		};
+
+		const toggleModeBtn = (darkMode: boolean) => {
+			if (darkMode) {
+				darkModeBtn?.classList.add("is-show");
+				lightModeBtn?.classList.remove("is-show");
+			} else {
+				lightModeBtn?.classList.add("is-show");
+				darkModeBtn?.classList.remove("is-show");
+			}
+			const mode = darkMode ? "dark" : "light";
+			document.querySelector("html")!.setAttribute?.("class", mode);
+			window.sessionStorage.setItem("dark-mode", mode);
+		};
+
+		const toggleThemeMode = async (mode: "light" | "dark") => {
+			startAnimation(mode).then(() => {
+				toggleModeBtn(mode === "dark");
+			});
+		};
+
+		(document!.querySelector("#theme-mode")! as HTMLDivElement).onclick =
+			() => {
+				toggleThemeMode(getCurrentDarkMode() ? "light" : "dark");
+			};
+		animation?.addEventListener("transitionend", () => {
+			animation.classList.add("is-hide");
+			animation.classList.remove("is-active", "is-dark", "is-light");
+		});
+
+		const darkModeCache = window.sessionStorage.getItem("dark-mode");
+		if (darkModeCache) {
+			toggleModeBtn(darkModeCache === "dark");
+		} else {
+			toggleModeBtn(getCurrentDarkMode());
+		}
+	};
+
+	init();
+
+	document.addEventListener("astro:after-swap", () => {
+		init();
+	});
+</script>

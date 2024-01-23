@@ -1,0 +1,55 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import Icon from "../../components/Icon.astro"
+import type { CollectionEntry } from "astro:content";
+import { getCollection } from "astro:content";
+import dayjs from "dayjs";
+import utc from "dayjs/plugin/utc";
+
+dayjs.extend(utc);
+
+export async function getStaticPaths() {
+	const posts = await getCollection("blog");
+	return posts.map((post) => ({
+		params: { slug: post.slug },
+		props: post,
+	}));
+}
+
+type Props = CollectionEntry<"blog">;
+
+const post = Astro.props;
+const { Content, remarkPluginFrontmatter } = await post?.render?.();
+const lastModified = dayjs(remarkPluginFrontmatter.lastModified)
+	.utc()
+	.format("YYYY/MM/DD");
+---
+
+<Layout title={post.data.title} desc={post.data.description}>
+	<div class="i-container mx-auto h-full overflow-y-auto py-6 base-bg rounded-lg p-3">
+		<div class="w-full mx-auto post-detail prose prose-stone dark:prose-invert">
+			<div class="mb-3">
+				<div class="mb-3 flex items-center gap-x-3 text-sm">
+					<span class="flex gap-x-1">
+						<span>
+							<Icon name="#uil-calendar-alt" className="size-5"/>
+						</span>
+						<span>
+							{lastModified}
+						</span>
+					</span>
+					<span class="flex gap-x-1">
+						<span>
+							<Icon name="#uil-clock-three" className="size-5"/>
+						</span>	
+						<span>
+							{remarkPluginFrontmatter.minutesRead} minute read time.
+						</span>
+					</span>
+				</div>
+				<h1 class="text-center">{post.data.title}</h1>
+			</div>
+			<Content />
+		</div>
+	</div>
+</Layout>

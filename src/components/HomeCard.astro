@@ -1,0 +1,42 @@
+---
+import { getEntryBySlug } from "astro:content";
+import dayjs from "dayjs";
+import utc from "dayjs/plugin/utc";
+
+dayjs.extend(utc);
+
+interface Props{
+  type: 'blog'
+  slug: string
+}
+
+const {type,slug} = Astro.props
+
+const entry = await getEntryBySlug(type,slug)
+
+const infoData = entry?.data 
+
+const {remarkPluginFrontmatter} = await entry!.render();
+
+const lastModified = dayjs(remarkPluginFrontmatter.lastModified)
+  .utc()
+  .format("HH:mm:ss DD MMMM YYYY");
+---
+
+<div
+  class="px-4 py-6 base-bg rounded-lg cursor-pointer transition-all duration-100 hover:shadow-lg flex"
+>
+  <a href={`/posts/${slug}`}>
+    <div class="flex flex-col w-full">
+      <h3 class="text-lg font-bold line-clamp-1 base-text" title={infoData?.title}>
+        {infoData?.title}
+      </h3>
+      <p class="text-sm indent-2 my-3 text-slate-500 line-clamp-3">
+        {infoData?.description}
+      </p>
+      <div class="mt-auto w-full text-xs text-slate-400 text-right">
+        <span>{lastModified}</span> · <span>{remarkPluginFrontmatter?.minutesRead} minute read</span>
+      </div>
+    </div>
+  </a>
+</div>
