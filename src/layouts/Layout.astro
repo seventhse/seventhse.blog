@@ -21,7 +21,7 @@ const {title,image,desc} = Astro.props;
 		<BaseHead title={title ? `${SITE_TITLE} - ${title}` : SITE_TITLE} description={desc ?? SITE_DESCRIPTION} image={image} />
 		<ViewTransitions />
 	</head>
-	<body class="w-screen min-h-screen relative overflow-hidden layout">
+	<body class="w-screen min-h-screen max-h-screen relative overflow-hidden layout">
 		<div>
 			<SpeedInsights />
 			<Header/>

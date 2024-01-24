@@ -1,5 +1,5 @@
 ---
-import HeaderLink from './HeaderLink.astro';
+import HeaderLink from "./HeaderLink.astro";
 interface Props {
   menus: Array<{
     label: string;
@@ -90,30 +90,36 @@ const { menus } = Astro.props;
 </style>
 
 <script>
-  const menu = document.querySelector("#mobile-menu");
-  const openMenuBtn = document.querySelector("#open-menu-btn");
-  const closeMenuBtn = document.querySelector("#close-menu-btn");
-  const menuMask = document.querySelector("#menu-mask");
+  const init = () => {
+    const menu = document.querySelector("#mobile-menu");
+    const openMenuBtn = document.querySelector("#open-menu-btn");
+    const closeMenuBtn = document.querySelector("#close-menu-btn");
+    const menuMask = document.querySelector("#menu-mask");
 
-  const closeMenu = () => {
-    menu?.classList.add("is-hide");
-    menuMask?.classList.add("is-hide");
-  };
+    const closeMenu = () => {
+      menu?.classList.add("is-hide");
+      menuMask?.classList.add("is-hide");
+    };
 
-  const openMenu = () => {
-    menu?.classList.remove("is-hide");
-    menuMask?.classList.remove("is-hide");
-  };
+    const openMenu = () => {
+      menu?.classList.remove("is-hide");
+      menuMask?.classList.remove("is-hide");
+    };
 
-  openMenuBtn?.addEventListener("click", () => {
-    openMenu();
-  });
+    openMenuBtn?.addEventListener("click", () => {
+      openMenu();
+    });
 
-  closeMenuBtn?.addEventListener("click", () => {
-    closeMenu();
-  });
+    closeMenuBtn?.addEventListener("click", () => {
+      closeMenu();
+    });
 
-  menuMask?.addEventListener("click", () => {
-    closeMenu();
-  });
+    menuMask?.addEventListener("click", () => {
+      closeMenu();
+    });
+  }
+  window.onload = init
+  document.addEventListener("astro:after-swap", () => {
+		init();
+	});
 </script>

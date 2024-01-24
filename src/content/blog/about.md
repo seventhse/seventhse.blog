@@ -1,7 +1,7 @@
 ---
 title: 'About the blog!'
 description: 'The article is being written...'
-pubDate: 'Jul 02 2022'
+pubDate: 'Jan 01 2024'
 author: 'Seventhse'
 ---
 
