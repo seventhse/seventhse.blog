@@ -16,7 +16,8 @@ body {
 .layout {
   display: grid;
   grid-template-columns: 1fr;
-  grid-template-rows: 70px calc(100vh - 70px - 46px) 46px;
+  grid-template-rows: 70px calc(100vh - 75px - 60px) 46px;
+  @apply gap-x-3;
 }
 
 .i-container {
