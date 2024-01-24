@@ -4,6 +4,7 @@ import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import { ViewTransitions } from 'astro:transitions';
 import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
+import  SpeedInsights  from "@vercel/speed-insights/astro"
 
 interface Props{
   title?: string
@@ -22,6 +23,7 @@ const {title,image,desc} = Astro.props;
 	</head>
 	<body class="w-screen min-h-screen relative overflow-hidden layout">
 		<div>
+			<SpeedInsights />
 			<Header/>
 		</div>
     <main class="overflow-hidden h-full"  transition:animate="slide">

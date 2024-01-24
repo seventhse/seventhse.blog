@@ -4,7 +4,7 @@ import tailwind from '@astrojs/tailwind';
 import sitemap from '@astrojs/sitemap';
 import {remarkReadingTime} from "./plugins/remark-reading-time.mjs"
 import { remarkModifiedTime } from './plugins/remark-modified-time.mjs';
-import vercel from '@astrojs/vercel/serverless';
+import vercel from '@astrojs/vercel/static';
 
 
 // https://astro.build/config
@@ -20,7 +20,7 @@ export default defineConfig({
 	devToolbar: {
 		enabled: false
 	},
-	output: 'server',
+	output: 'static',
 	adapter: vercel({
 		webAnalytics: {
 			imagesConfig: {
