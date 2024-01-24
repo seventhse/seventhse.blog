@@ -22,10 +22,10 @@ export default defineConfig({
 	},
 	output: 'static',
 	adapter: vercel({
+		imagesConfig: {
+			sizes: [320, 640, 1280],
+		},
 		webAnalytics: {
-			imagesConfig: {
-				sizes: [320, 640, 1280],
-			},
       enabled: true,
     },
 	}),
